@@ -19,6 +19,7 @@ namespace ToDoAPI.Controllers
         public TasksController(TaskContext context)
         {
             _context = context;
+            context.Database.EnsureCreated();
         }
 
         // GET: api/Tasks
@@ -30,7 +31,7 @@ namespace ToDoAPI.Controllers
 
         // GET: api/Tasks/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Task>> GetTask(long id)
+        public async Task<ActionResult<Task>> GetTask(int id)
         {
             var task = await _context.Tasks.FindAsync(id);
 

@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "C:\\Users\\enisa\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\enisa\\.nuget\\packages"
+      "C:\\Users\\Comp\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Comp\\.nuget\\packages"
     ]
   }
 }

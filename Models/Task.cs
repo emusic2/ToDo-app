@@ -3,25 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ToDoAPI.Models
 {
     public class Task
     {
-        public long Id { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         [Required]
-        public string TaskName { get; set; }
+        public string Name { get; set; }
+
+        [ForeignKey("State")]
+        public int StateId { get; set; }
+
+        [ForeignKey("Tag")]
+        public int TagId { get; set; }
 
         [Required]
-        public State State { get; set; }
+        public string LiveTimeSpent { get; set; }
 
-        [Required]
-        public Tag Tag { get; set; }
-
-        [DisplayFormat(DataFormatString = "{HH:mm}")]
-        [Required]
-        public DateTime LiveTimeSpent { get; set; }
 
     }
 }

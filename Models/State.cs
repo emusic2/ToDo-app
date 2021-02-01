@@ -8,9 +8,11 @@ namespace ToDoAPI.Models
 {
     public class State
     {
-        public long Id { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         [Required]
-        public string StateName { get; set; }
+        public string Name { get; set; }
+
     }
 }
