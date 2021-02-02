@@ -8,6 +8,7 @@ using ToDoAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using ToDoAPI.Settings;
 using MyMusic.Api.Extensions;
+using ToDoAPI.Data;
 
 namespace ToDoAPI
 {
@@ -22,13 +23,11 @@ namespace ToDoAPI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
 
-            services.AddDbContext<TaskContext>(opt =>
-                                                opt.UseInMemoryDatabase("TodoDB").EnableSensitiveDataLogging());
+            services.AddDbContext<TaskContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ToDoDB")));
 
             services.AddIdentity<User, Role>()
                     .AddEntityFrameworkStores<TaskContext>()
@@ -37,10 +36,11 @@ namespace ToDoAPI
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             services.AddAuth(jwtSettings);
 
+            services.AddScoped<ITaskRepository, TaskRepository>();
+
             services.AddControllers();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

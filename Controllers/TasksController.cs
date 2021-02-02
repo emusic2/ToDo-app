@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ToDoAPI.Data;
 using ToDoAPI.Models;
 using Task = ToDoAPI.Models.Task;
 
@@ -15,22 +16,28 @@ namespace ToDoAPI.Controllers
     public class TasksController : ControllerBase
     {
         private readonly TaskContext _context;
+        private readonly ITaskRepository _taskRepository;
 
-        public TasksController(TaskContext context)
+        public TasksController(TaskContext context, ITaskRepository taskRepository)
         {
             _context = context;
             context.Database.EnsureCreated();
+            _taskRepository = taskRepository;
         }
 
         // GET: api/Tasks
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Task>>> GetTasks()
+        public async Task<ActionResult<IEnumerable<Task>>> GetTasks(String search)
         {
+            if(!String.IsNullOrEmpty(search))
+            {
+               return await _taskRepository.SearchByName(search);
+            }
             return await _context.Tasks.ToListAsync();
         }
 
         // GET: api/Tasks/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Task>> GetTask(int id)
         {
             var task = await _context.Tasks.FindAsync(id);
@@ -43,10 +50,7 @@ namespace ToDoAPI.Controllers
             return task;
         }
 
-        // PUT: api/Tasks/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> PutTask(long id, Task task)
         {
             if (id != task.Id)
@@ -75,9 +79,6 @@ namespace ToDoAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Tasks
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<Task>> PostTask(Task task)
         {
@@ -87,8 +88,7 @@ namespace ToDoAPI.Controllers
             return CreatedAtAction("GetTask", new { id = task.Id }, task);
         }
 
-        // DELETE: api/Tasks/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<Task>> DeleteTask(long id)
         {
             var task = await _context.Tasks.FindAsync(id);
