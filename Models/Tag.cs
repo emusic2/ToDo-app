@@ -8,11 +8,12 @@ namespace ToDoAPI.Models
 {
     public class Tag
     {
-        [Key]
         public int Id { get; set; }
 
         [StringLength(20, MinimumLength = 3)]
         [Required]
         public string Name { get; set; }
+
+        public ICollection<TagsTasks> Tasks { get; set; }
     }
 }

@@ -25,15 +25,10 @@ namespace ToDoAPI.Controllers
             _taskRepository = taskRepository;
         }
 
-        // GET: api/Tasks
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Task>>> GetTasks(String search)
+        public async Task<ActionResult<IEnumerable<Task>>> GetTasks(String search, string tagFilters)
         {
-            if(!String.IsNullOrEmpty(search))
-            {
-               return await _taskRepository.SearchByName(search);
-            }
-            return await _context.Tasks.ToListAsync();
+            return await _taskRepository.FilterTasks(search, tagFilters);
         }
 
         // GET: api/Tasks/5

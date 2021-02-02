@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoAPI.Models;
 
 namespace ToDoAPI.Migrations
 {
     [DbContext(typeof(TaskContext))]
-    partial class TaskContextModelSnapshot : ModelSnapshot
+    [Migration("20210202202343_migration2")]
+    partial class migration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,6 +170,16 @@ namespace ToDoAPI.Migrations
                         {
                             Id = 1,
                             Name = "Not started"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "In progress"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Completed"
                         });
                 });
 
@@ -192,6 +204,11 @@ namespace ToDoAPI.Migrations
                         {
                             Id = 1,
                             Name = "Normal"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "High priority"
                         });
                 });
 
@@ -208,28 +225,6 @@ namespace ToDoAPI.Migrations
                     b.HasIndex("TaskId");
 
                     b.ToTable("TagTask");
-
-                    b.HasData(
-                        new
-                        {
-                            TagId = 1,
-                            TaskId = 1
-                        },
-                        new
-                        {
-                            TagId = 1,
-                            TaskId = 2
-                        },
-                        new
-                        {
-                            TagId = 1,
-                            TaskId = 3
-                        },
-                        new
-                        {
-                            TagId = 2,
-                            TaskId = 1
-                        });
                 });
 
             modelBuilder.Entity("ToDoAPI.Models.Task", b =>
@@ -250,6 +245,9 @@ namespace ToDoAPI.Migrations
                     b.Property<int>("StateId")
                         .HasColumnType("int");
 
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Tasks");
@@ -260,42 +258,48 @@ namespace ToDoAPI.Migrations
                             Id = 1,
                             LiveTimeSpent = "00:00",
                             Name = "Task 1",
-                            StateId = 1
+                            StateId = 1,
+                            TagId = 1
                         },
                         new
                         {
                             Id = 2,
                             LiveTimeSpent = "00:00",
                             Name = "Task 2",
-                            StateId = 1
+                            StateId = 1,
+                            TagId = 1
                         },
                         new
                         {
                             Id = 3,
                             LiveTimeSpent = "00:00",
                             Name = "Task 3",
-                            StateId = 1
+                            StateId = 1,
+                            TagId = 1
                         },
                         new
                         {
                             Id = 4,
                             LiveTimeSpent = "00:00",
                             Name = "Task 4",
-                            StateId = 1
+                            StateId = 1,
+                            TagId = 1
                         },
                         new
                         {
                             Id = 5,
                             LiveTimeSpent = "00:00",
                             Name = "Task 5",
-                            StateId = 1
+                            StateId = 1,
+                            TagId = 1
                         },
                         new
                         {
                             Id = 6,
                             LiveTimeSpent = "00:00",
                             Name = "Task 6",
-                            StateId = 1
+                            StateId = 1,
+                            TagId = 1
                         });
                 });
 

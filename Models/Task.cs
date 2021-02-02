@@ -9,7 +9,6 @@ namespace ToDoAPI.Models
 {
     public class Task
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -18,11 +17,11 @@ namespace ToDoAPI.Models
         [ForeignKey("State")]
         public int StateId { get; set; }
 
-        [ForeignKey("Tag")]
-        public int TagId { get; set; }
-
         [Required]
+        [DisplayFormat(DataFormatString = "{HH:mm}")]
         public string LiveTimeSpent { get; set; }
+
+        public ICollection<TagsTasks> Tags { get; set; }
 
 
     }

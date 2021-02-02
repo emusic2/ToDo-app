@@ -19,6 +19,8 @@ namespace ToDoAPI.Models
         public DbSet<State> States { get; set; }
         public DbSet<Tag> Tags { get; set; }
 
+        public DbSet<TagsTasks> TagTask { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -29,23 +31,9 @@ namespace ToDoAPI.Models
                 Name = "Not started"
             };
 
-            var SecondState = new Models.State
-            {
-                Id = 2,
-                Name = "In progress"
-            };
-
-            var ThirdState = new Models.State
-            {
-                Id = 3,
-                Name = "Completed"
-            };
-
             modelBuilder.Entity<State>(s =>
             {
                 s.HasData(FirstState);
-                s.HasData(SecondState);
-                s.HasData(ThirdState);
             });
 
             var NormalTag = new Models.Tag
@@ -54,37 +42,53 @@ namespace ToDoAPI.Models
                 Name = "Normal"
             };
 
-            var HighPriority = new Models.Tag
-            {
-                Id = 2,
-                Name = "High priority"
-            };
-
             modelBuilder.Entity<Tag>(t =>
             {
                 t.HasData(NormalTag);
-                t.HasData(HighPriority);
             });
 
+            modelBuilder.Entity<TagsTasks>()
+            .HasKey(bc => new { bc.TagId, bc.TaskId });
+
+            modelBuilder.Entity<TagsTasks>()
+                .HasOne(bc => bc.Tag)
+                .WithMany(b => b.Tasks)
+                .HasForeignKey(bc => bc.TagId);
+
+            modelBuilder.Entity<TagsTasks>()
+                .HasOne(bc => bc.Task)
+                .WithMany(c => c.Tags)
+                .HasForeignKey(bc => bc.TaskId);
+
+            modelBuilder.Entity<TagsTasks>().HasData(
+              new TagsTasks { TagId = 1, TaskId = 1 }
+             );
+            modelBuilder.Entity<TagsTasks>().HasData(
+              new TagsTasks { TagId = 1, TaskId = 2 }
+             );
+            modelBuilder.Entity<TagsTasks>().HasData(
+              new TagsTasks { TagId = 1, TaskId = 3 }
+             );
 
             modelBuilder.Entity<Task>().HasData(
-                new Task { Id = 1, Name = "Task 1", StateId = FirstState.Id, TagId = NormalTag.Id, LiveTimeSpent = "00:00" }
+                new Task { Id = 1, Name = "Task 1", StateId = FirstState.Id, LiveTimeSpent = "00:00" }
             );
             modelBuilder.Entity<Task>().HasData(
-                new Task { Id = 2, Name = "Task 2", StateId = FirstState.Id, TagId = NormalTag.Id, LiveTimeSpent = "00:00" }
+                new Task { Id = 2, Name = "Task 2", StateId = FirstState.Id, LiveTimeSpent = "00:00" }
             );
             modelBuilder.Entity<Task>().HasData(
-                new Task { Id = 3, Name = "Task 3", StateId = FirstState.Id, TagId = NormalTag.Id, LiveTimeSpent = "00:00" }
+                new Task { Id = 3, Name = "Task 3", StateId = FirstState.Id, LiveTimeSpent = "00:00" }
             );
             modelBuilder.Entity<Task>().HasData(
-                new Task { Id = 4, Name = "Task 4", StateId = FirstState.Id, TagId = NormalTag.Id, LiveTimeSpent = "00:00" }
+                new Task { Id = 4, Name = "Task 4", StateId = FirstState.Id, LiveTimeSpent = "00:00" }
             );
             modelBuilder.Entity<Task>().HasData(
-                new Task { Id = 5, Name = "Task 5", StateId = FirstState.Id, TagId = NormalTag.Id, LiveTimeSpent = "00:00" }
+                new Task { Id = 5, Name = "Task 5", StateId = FirstState.Id, LiveTimeSpent = "00:00" }
             );
             modelBuilder.Entity<Task>().HasData(
-                new Task { Id = 6, Name = "Task 6", StateId = FirstState.Id, TagId = NormalTag.Id, LiveTimeSpent = "00:00" }
+                new Task { Id = 6, Name = "Task 6", StateId = FirstState.Id, LiveTimeSpent = "00:00" }
             );
+            
         }
     }
 }
