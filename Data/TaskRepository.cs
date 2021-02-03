@@ -39,7 +39,7 @@ namespace ToDoAPI.Data
 
             if (!String.IsNullOrEmpty(Name))
             {
-                query = query.Where(n => n.Name.Contains(Name, StringComparison.CurrentCultureIgnoreCase));
+                query = query.Where(n => n.Name.Contains(Name));
             }
 
           
