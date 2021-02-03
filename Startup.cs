@@ -38,6 +38,9 @@ namespace ToDoAPI
 
             services.AddScoped<ITaskRepository, TaskRepository>();
 
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddControllers();
         }
 
